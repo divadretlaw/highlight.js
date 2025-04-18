@@ -34,19 +34,26 @@ public struct CodeBox: View {
     public var body: some View {
         Group {
             if let backgroundStyle {
-                GroupBox {
+                VStack {
                     content
+                        .padding(10)
                 }
                 .backgroundStyle(backgroundStyle)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             } else if let color = highlightedString?.backgroundcolor {
-                GroupBox {
+                VStack {
                     content
+                        .padding(10)
                 }
-                .backgroundStyle(color)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             } else {
-                GroupBox {
+                VStack {
                     content
+                        .padding(10)
                 }
+                .background(.secondary.opacity(0.2))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
         }
         .task(id: identifier) {
