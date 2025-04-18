@@ -15,6 +15,10 @@ let package = Package(
             name: "HighlightJS",
             targets: ["HighlightJS"]
         ),
+        .library(
+            name: "HighlightUI",
+            targets: ["HighlightUI"]
+        )
     ],
     targets: [
         .target(
@@ -23,11 +27,16 @@ let package = Package(
                 .process("Resources")
             ]
         ),
+        .target(
+            name: "HighlightUI",
+            dependencies: [
+                "HighlightJS"
+            ]
+        ),
         .testTarget(
             name: "HighlightTests",
             dependencies: [
-                "HighlightJS",
-                "HighlightUI"
+                "HighlightJS"
             ]
         )
     ]
