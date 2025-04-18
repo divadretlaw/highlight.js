@@ -19,8 +19,7 @@ public struct CodeText: View {
     let text: String
     let language: Language?
 
-    @State private var attributedString: HighlightedString?
-    @State private var color: Color?
+    @State private var highlightedString: HighlightedString?
 
     public init(_ text: String, language: Language? = nil) {
         self.text = text
@@ -33,26 +32,26 @@ public struct CodeText: View {
     }
 
     public var body: some View {
-        Text(renderedText)
+        Text(string)
             .font(font ?? .callout)
             .monospaced()
             .task(id: identifier) {
                 do {
-                    attributedString = if let language {
+                    highlightedString = if let language {
                         try await highlightJS.highlightedString(text, language: language, css: style.css(for: colorScheme))
                     } else {
                         try await highlightJS.highlightedString(text, css: style.css(for: colorScheme))
                     }
                 } catch {
-                    attributedString = HighlightedString(stringLiteral: text)
+                    highlightedString = HighlightedString(stringLiteral: text)
                 }
             }
             .padding(insets)
-            .modifier(BackgroundModifier(color: attributedString?.backgroundcolor))
+            .modifier(BackgroundModifier(color: highlightedString?.backgroundcolor))
     }
 
-    private var renderedText: HighlightedString {
-        attributedString ?? HighlightedString(stringLiteral: text)
+    private var string: HighlightedString {
+        highlightedString ?? HighlightedString(stringLiteral: text)
     }
 
     private var identifier: Int {
@@ -88,6 +87,5 @@ private struct BackgroundModifier: ViewModifier {
 
 #Preview {
     CodeText(#"print("Hello World")"#, language: .swift)
-        .codeTextInsets()
-        .padding()
+        .codeTextInsets(8)
 }
