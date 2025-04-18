@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// An adaptive style for Highlight.js content
 public struct Style: Hashable, Equatable, Sendable {
     /// The default style
     private var _css: String

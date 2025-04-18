@@ -10,7 +10,8 @@ import HighlightJS
 
 extension EnvironmentValues {
     // MARK: - Public
-
+    
+    /// The Highlight.js instance to use
     public var highlightJS: Highlight {
         get { self[HighlightEnvironmentKey.self] }
         set { self[HighlightEnvironmentKey.self] = newValue }

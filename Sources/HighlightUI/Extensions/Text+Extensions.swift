@@ -10,8 +10,12 @@ import HighlightJS
 import SwiftUI
 
 extension Text {
-    public init(_ string: HighlightedString) {
-        self.init(string.wrappedValue)
+    /// Creates a text view that displays styled highlighted content.
+    ///
+    /// - Parameters:
+    ///     - highlightedContent: An highlighted string to style and display, in accordance with its attributes.
+    public init(_ highlightedContent: HighlightedString) {
+        self.init(highlightedContent.wrappedValue)
     }
 }
 #endif
