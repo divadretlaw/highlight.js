@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  HighlightJS
-//
-//  Created by David Walter on 18.04.25.
-//
-
 import Foundation
 import Testing
 @testable import HighlightJS

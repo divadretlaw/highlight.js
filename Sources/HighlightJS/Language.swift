@@ -210,6 +210,59 @@ public enum Language: String, Identifiable, Hashable, Equatable, CaseIterable, S
         }
     }
 
+    public init?(rawValue: String) {
+        if let value = Self.allCases.first(where: { $0.rawValue == rawValue.lowercased() }) {
+            self = value
+        } else if let value = Self.allCases.first(where: { $0.aliases.contains(rawValue.lowercased()) }) {
+            self = value
+        } else {
+            return nil
+        }
+    }
+
+    var aliases: [String] {
+        switch self {
+        case .applescript:
+            ["osascript"]
+        case .objectivec:
+            ["objc", "obj-c", "obj-c++", "objective-c++", "mm"]
+        case .markdown:
+            ["md", "mkdown", "mkd"]
+        case .javascript:
+            ["js", "jsx"]
+        case .typescript:
+            ["ts", "tsx"]
+        case .c:
+            ["h"]
+        case .cpp:
+            ["hpp", "c++", "h++", "cxx", "hxx"]
+        case .csharp:
+            ["cs"]
+        case .bash:
+            ["zsh", "sh"]
+        case .shell:
+            ["console"]
+        case .dos:
+            ["bat", "cmd"]
+        case .ruby:
+            ["rb"]
+        case .rust:
+            ["rs"]
+        case .kotlin:
+            ["kt"]
+        case .protobuf:
+            ["proto"]
+        case .haskell:
+            ["hs"]
+        case .xml:
+            ["html", "xhtml", "rss", "atom", "xjb", "xsd", "xsl", "plist", "svg"]
+        case .plaintext:
+            ["txt", "text"]
+        default:
+            []
+        }
+    }
+
     // MARK: - Identifiable
 
     public var id: String {
