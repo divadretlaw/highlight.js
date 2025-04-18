@@ -66,12 +66,19 @@ public struct CodeText: View {
 
 private struct BackgroundModifier: ViewModifier {
     @Environment(\.codeTextBackground) private var visibility
+    @Environment(\.backgroundStyle) private var backgroundStyle
 
     let color: Color?
 
     func body(content: Content) -> some View {
         switch visibility {
-        case .automatic, .visible:
+        case .automatic:
+            if let backgroundStyle {
+                content.background(backgroundStyle)
+            } else {
+                content.background(color)
+            }
+        case .visible:
             content.background(color)
         case .hidden:
             content
