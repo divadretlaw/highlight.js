@@ -10,7 +10,7 @@ import HighlightJS
 import SwiftUI
 
 extension Text {
-    init(_ string: HighlightedString) {
+    public init(_ string: HighlightedString) {
         self.init(string.wrappedValue)
     }
 }
