@@ -10,7 +10,7 @@ import HighlightJS
 
 public struct CodeText: View {
     @Environment(\.highlightJS) private var highlightJS
-    @Environment(\.codeTextStyle) private var style
+    @Environment(\.codeStyle) private var style
 
     @Environment(\.font) private var font
     @Environment(\.colorScheme) private var colorScheme
@@ -66,5 +66,5 @@ public struct CodeText: View {
 
 #Preview {
     CodeText(#"print("Hello World")"#, language: .swift)
-        .codeBoxInsets(8)
+        .padding()
 }

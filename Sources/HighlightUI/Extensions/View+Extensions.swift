@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HighlightJS
 
 extension View {
     // MARK: - Insets
@@ -45,5 +46,14 @@ extension View {
     /// - Returns: A view that uses the given edge insets when used as a code text.
     public func codeBoxInsets(_ length: CGFloat) -> some View {
         environment(\.codeBoxInsets, EdgeInsets(.all, length))
+    }
+
+    // MARK: - Style
+
+    /// Sets the style to use in ``CodeText`` and ``CodeBlock``
+    ///
+    /// - Parameter style: The style to use
+    public func codeStyle(_ style: Style) -> some View {
+        environment(\.codeStyle, style)
     }
 }

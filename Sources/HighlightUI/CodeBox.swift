@@ -10,7 +10,7 @@ import HighlightJS
 
 public struct CodeBox: View {
     @Environment(\.highlightJS) private var highlightJS
-    @Environment(\.codeTextStyle) private var style
+    @Environment(\.codeStyle) private var style
     @Environment(\.codeBoxInsets) private var insets
 
     @Environment(\.font) private var font
