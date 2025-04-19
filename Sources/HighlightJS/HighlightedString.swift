@@ -42,9 +42,9 @@ public struct HighlightedString: Hashable, Equatable, Sendable, ExpressibleByStr
 
     init(_ text: String, css: String) throws {
         let html = """
-        <style>\(css)</style>
-        <pre><code class="hljs">\(text)</code></pre>
-        """
+            <style>\(css)</style>
+            <pre><code class="hljs">\(text)</code></pre>
+            """
 
         let string = try NSMutableAttributedString(
             data: Data(html.utf8),

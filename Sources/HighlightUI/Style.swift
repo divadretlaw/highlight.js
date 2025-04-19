@@ -16,7 +16,7 @@ public struct Style: Hashable, Equatable, Sendable {
     private var _dark: String?
     /// The light variant
     private var _light: String?
-    
+
     /// Create a style
     ///
     /// - Parameter css: The CSS of the style
@@ -25,7 +25,7 @@ public struct Style: Hashable, Equatable, Sendable {
     }
 
     /// Create a style
-    /// 
+    ///
     /// - Parameters:
     ///   - light: The CSS of the light variant of the style
     ///   - dark: The CSS of the dark variant of the style
@@ -33,7 +33,7 @@ public struct Style: Hashable, Equatable, Sendable {
         _css = light
         _dark = dark
     }
-    
+
     /// Create a style
     ///
     /// - Parameters:
@@ -48,12 +48,12 @@ public struct Style: Hashable, Equatable, Sendable {
         _light = light
         _dark = dark
     }
-    
+
     /// The light variant (if available)
     var light: String {
         _light ?? _css
     }
-    
+
     /// The dark variant (if available)
     var dark: String {
         _dark ?? _css

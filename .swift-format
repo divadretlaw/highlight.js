@@ -11,9 +11,9 @@
   "lineBreakBeforeControlFlowKeywords" : false,
   "lineBreakBeforeEachArgument" : false,
   "lineBreakBeforeEachGenericRequirement" : false,
-  "lineLength" : 300,
+  "lineLength" : 500,
   "maximumBlankLines" : 1,
-  "multiElementCollectionTrailingCommas" : true,
+  "multiElementCollectionTrailingCommas" : false,
   "noAssignmentInExpressions" : {
     "allowedFunctions" : [
       "XCTAssertNoThrow"
@@ -48,7 +48,7 @@
     "NoVoidReturnOnFunctionSignature" : true,
     "OmitExplicitReturns" : false,
     "OneCasePerLine" : true,
-    "OneVariableDeclarationPerLine" : true,
+    "OneVariableDeclarationPerLine" : false,
     "OnlyOneTrailingClosureArgument" : true,
     "OrderedImports" : false,
     "ReplaceForEachWithForLoop" : true,

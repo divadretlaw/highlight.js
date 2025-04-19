@@ -19,7 +19,7 @@ extension Highlight {
         public let relevance: Int
         /// Boolean representing whether any illegal matches were found
         public let illegal: Bool
-        
+
         /// Create a Hightlight.js result
         /// - Parameters:
         ///   - value:  HTML string with highlighting markup
@@ -32,7 +32,7 @@ extension Highlight {
             self.relevance = relevance
             self.illegal = illegal
         }
-        
+
         /// Create a Hightlight.js result from a `JSValue`
         /// - Parameter jsValue: The value
         public init(_ jsValue: JSValue?) throws {

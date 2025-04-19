@@ -70,7 +70,6 @@ public final actor Highlight {
         }
         return try Result(result, fallback: text)
     }
-    
     /// Returns the full Highlight.js version
     public var version: String {
         get throws {
