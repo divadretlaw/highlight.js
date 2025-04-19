@@ -36,7 +36,8 @@ let package = Package(
         .testTarget(
             name: "HighlightTests",
             dependencies: [
-                "HighlightJS"
+                "HighlightJS",
+                "HighlightUI"
             ]
         )
     ]

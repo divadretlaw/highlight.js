@@ -85,6 +85,52 @@ public struct HighlightedString: Hashable, Equatable, Sendable, ExpressibleByStr
         #endif
     }
 
+    /// Create a highlighted string from an attributed string.
+    ///
+    /// - Parameter attributedString: The attributed string to use.
+    public init(_ attributedString: AttributedString) throws {
+        try self.init(NSMutableAttributedString(attributedString))
+    }
+
+    /// Create a highlighted string from an attributed string.
+    ///
+    /// - Parameter attributedString: The attributed string to use.
+    public init(_ attributedString: NSAttributedString) throws {
+        try self.init(NSMutableAttributedString(attributedString: attributedString))
+    }
+
+    private init(_ string: NSMutableAttributedString) throws {
+        let range = NSRange(location: 0, length: string.length)
+        // Read attributes before adapting
+        let attributes = string.attributes(at: 0, longestEffectiveRange: nil, in: range)
+        // Remove certain attributes
+        string.removeAttribute(.font, range: range)
+        string.removeAttribute(.backgroundColor, range: range)
+        let attributedString = string.attributedSubstring(from: range)
+
+        #if canImport(AppKit)
+        wrappedValue = try AttributedString(attributedString, including: \.appKit)
+        #elseif canImport(UIKit)
+        wrappedValue = try AttributedString(attributedString, including: \.uiKit)
+        #else
+        wrappedValue = AttributedString(attributedString)
+        #endif
+
+        #if canImport(AppKit)
+        nsBackgroundColor = attributes[.backgroundColor] as? NSColor
+            #if canImport(SwiftUI)
+            backgroundcolor = Color(nsBackgroundColor)
+            #endif
+        #endif
+
+        #if canImport(UIKit)
+        uiBackgroundColor = attributes[.backgroundColor] as? UIColor
+            #if canImport(SwiftUI)
+            backgroundcolor = Color(uiBackgroundColor)
+            #endif
+        #endif
+    }
+
     /// The character contents of the highlighted string as a string.
     public var string: String {
         NSAttributedString(wrappedValue).string

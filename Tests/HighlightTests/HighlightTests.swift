@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import HighlightJS
 
-struct HighlightJS {
+struct HighlightTests {
     let hljs = Highlight()
 
     @Test func version() async throws {
