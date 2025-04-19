@@ -8,7 +8,7 @@
 import Foundation
 import JavaScriptCore
 
-/// `Highlight` exports a few functions as methods of the [Highlight.js](https://highlightjs.readthedocs.io/) object.
+/// `Highlight` exports a few functions as methods of the [Highlight.js](https://highlightjs.readthedocs.io) object.
 public final actor Highlight {
     private var _hljs: JSValue?
     var hljs: JSValue {
@@ -52,7 +52,7 @@ public final actor Highlight {
         ]
 
         let result = try hljs.invokeMethod("highlight", withArguments: [text, options])
-        return try Result(result)
+        return try Result(result, fallback: text)
     }
 
     /// Highlighting with language detection.
@@ -68,7 +68,7 @@ public final actor Highlight {
         } else {
             try hljs.invokeMethod("highlightAuto", withArguments: [text])
         }
-        return try Result(result)
+        return try Result(result, fallback: text)
     }
     
     /// Returns the full Highlight.js version
@@ -98,11 +98,7 @@ public final actor Highlight {
         css: String
     ) throws -> HighlightedString {
         let result = try highlight(text, language: language, ignoreIllegals: ignoreIllegals)
-        if result.value == "undefined" {
-            return HighlightedString(stringLiteral: text)
-        } else {
-            return try HighlightedString(result.value, css: css)
-        }
+        return try HighlightedString(result.value, css: css)
     }
 
     /// Create a ``HighlightedString`` with language detection.
@@ -118,10 +114,6 @@ public final actor Highlight {
         css: String
     ) throws -> HighlightedString {
         let result = try highlightAuto(text, languages: languages)
-        if result.value == "undefined" {
-            return HighlightedString(stringLiteral: text)
-        } else {
-            return try HighlightedString(result.value, css: css)
-        }
+        return try HighlightedString(result.value, css: css)
     }
 }

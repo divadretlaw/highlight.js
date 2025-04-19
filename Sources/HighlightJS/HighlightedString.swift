@@ -19,21 +19,28 @@ import UIKit
 import SwiftUI
 #endif
 
-/// A String with highlights from Highlight.js
-public struct HighlightedString: AttributedStringProtocol, ExpressibleByStringLiteral {
+/// A string with highlights from Highlight.js
+public struct HighlightedString: Hashable, Equatable, Sendable, ExpressibleByStringLiteral {
     package var wrappedValue: AttributedString
 
     #if canImport(AppKit)
+    /// The preferred background color of the highlighted string
     public let nsBackgroundColor: NSColor?
     #endif
     #if canImport(UIKit)
+    /// The preferred background color of the highlighted string
     public let uiBackgroundColor: UIColor?
     #endif
     #if canImport(SwiftUI)
+    /// The preferred background color of the highlighted string
     public let backgroundcolor: Color?
     #endif
 
-    public init(_ text: String, css: String) throws {
+    public init(_ result: Highlight.Result, css: String) throws {
+        try self.init(result.value, css: css)
+    }
+
+    init(_ text: String, css: String) throws {
         let html = """
         <style>\(css)</style>
         <pre><code class="hljs">\(text)</code></pre>
@@ -78,6 +85,11 @@ public struct HighlightedString: AttributedStringProtocol, ExpressibleByStringLi
         #endif
     }
 
+    /// The character contents of the highlighted string as a string.
+    public var string: String {
+        NSAttributedString(wrappedValue).string
+    }
+
     // MARK: - ExpressibleByStringLiteral
 
     public init(stringLiteral value: String) {
@@ -94,70 +106,5 @@ public struct HighlightedString: AttributedStringProtocol, ExpressibleByStringLi
         #if canImport(SwiftUI)
         backgroundcolor = nil
         #endif
-    }
-
-    // MARK: - AttributedStringProtocol
-
-    public var startIndex: AttributedString.Index {
-        wrappedValue.startIndex
-    }
-
-    public var endIndex: AttributedString.Index {
-        wrappedValue.endIndex
-    }
-
-    public var runs: AttributedString.Runs {
-        wrappedValue.runs
-    }
-
-    public var characters: AttributedString.CharacterView {
-        wrappedValue.characters
-    }
-
-    public var unicodeScalars: AttributedString.UnicodeScalarView {
-        wrappedValue.unicodeScalars
-    }
-
-    public subscript<K>(value: K.Type) -> K.Value? where K : AttributedStringKey, K.Value : Sendable {
-        get {
-            wrappedValue[value]
-        }
-        set {
-            wrappedValue[value] = newValue
-        }
-    }
-
-    public subscript<K>(dynamicMember keyPath: KeyPath<AttributeDynamicLookup, K>) -> K.Value? where K : AttributedStringKey, K.Value : Sendable {
-        get {
-            wrappedValue[dynamicMember: keyPath]
-        }
-        set {
-            wrappedValue[dynamicMember: keyPath] = newValue
-        }
-    }
-
-    public subscript<S>(dynamicMember keyPath: KeyPath<AttributeScopes, S.Type>) -> ScopedAttributeContainer<S> where S : AttributeScope {
-        get {
-            wrappedValue[dynamicMember: keyPath]
-        }
-        set {
-            wrappedValue[dynamicMember: keyPath] = newValue
-        }
-    }
-
-    public subscript<R>(bounds: R) -> AttributedSubstring where R : RangeExpression, R.Bound == AttributedString.Index {
-        wrappedValue[bounds]
-    }
-
-    public mutating func setAttributes(_ attributes: AttributeContainer) {
-        wrappedValue.setAttributes(attributes)
-    }
-
-    public mutating func mergeAttributes(_ attributes: AttributeContainer, mergePolicy: AttributedString.AttributeMergePolicy) {
-        wrappedValue.mergeAttributes(attributes, mergePolicy: mergePolicy)
-    }
-
-    public mutating func replaceAttributes(_ attributes: AttributeContainer, with others: AttributeContainer) {
-        wrappedValue.replaceAttributes(attributes, with: others)
     }
 }

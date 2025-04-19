@@ -11,6 +11,7 @@ import HighlightJS
 public struct CodeBox: View {
     @Environment(\.highlightJS) private var highlightJS
     @Environment(\.codeTextStyle) private var style
+    @Environment(\.codeBoxInsets) private var insets
 
     @Environment(\.font) private var font
     @Environment(\.colorScheme) private var colorScheme
@@ -36,21 +37,18 @@ public struct CodeBox: View {
             if let backgroundStyle {
                 VStack {
                     content
-                        .padding(10)
                 }
                 .backgroundStyle(backgroundStyle)
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             } else if let color = highlightedString?.backgroundcolor {
                 VStack {
                     content
-                        .padding(10)
                 }
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             } else {
                 VStack {
                     content
-                        .padding(10)
                 }
                 .background(.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
@@ -59,25 +57,30 @@ public struct CodeBox: View {
         .task(id: identifier) {
             do {
                 highlightedString = if let language {
-                    try await highlightJS.highlightedString(text, language: language, css: style.css(for: colorScheme))
+                    try await highlightJS.highlightedString(text, language: language, css: css)
                 } else {
-                    try await highlightJS.highlightedString(text, css: style.css(for: colorScheme))
+                    try await highlightJS.highlightedString(text, css: css)
                 }
             } catch {
-                highlightedString = HighlightedString(stringLiteral: text)
+                highlightedString = nil
             }
         }
     }
 
     var content: some View {
-        Text(string)
+        Text(attributedString)
             .font(font ?? .callout)
             .monospaced()
             .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(insets ?? EdgeInsets(.all, 10))
     }
 
-    private var string: HighlightedString {
-        highlightedString ?? HighlightedString(stringLiteral: text)
+    private var attributedString: AttributedString {
+        highlightedString?.wrappedValue ?? AttributedString(stringLiteral: text)
+    }
+
+    private var css: String {
+        style.css(for: colorScheme)
     }
 
     private var identifier: Int {

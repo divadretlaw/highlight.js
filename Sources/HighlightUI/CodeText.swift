@@ -10,7 +10,6 @@ import HighlightJS
 
 public struct CodeText: View {
     @Environment(\.highlightJS) private var highlightJS
-    @Environment(\.codeTextInsets) private var insets
     @Environment(\.codeTextStyle) private var style
 
     @Environment(\.font) private var font
@@ -32,26 +31,28 @@ public struct CodeText: View {
     }
 
     public var body: some View {
-        Text(string)
+        Text(attributedString)
             .font(font ?? .callout)
             .monospaced()
             .task(id: identifier) {
                 do {
                     highlightedString = if let language {
-                        try await highlightJS.highlightedString(text, language: language, css: style.css(for: colorScheme))
+                        try await highlightJS.highlightedString(text, language: language, css: css)
                     } else {
-                        try await highlightJS.highlightedString(text, css: style.css(for: colorScheme))
+                        try await highlightJS.highlightedString(text, css: css)
                     }
                 } catch {
-                    highlightedString = HighlightedString(stringLiteral: text)
+                    highlightedString = nil
                 }
             }
-            .padding(insets)
-            .modifier(BackgroundModifier(color: highlightedString?.backgroundcolor))
     }
 
-    private var string: HighlightedString {
-        highlightedString ?? HighlightedString(stringLiteral: text)
+    private var attributedString: AttributedString {
+        highlightedString?.wrappedValue ?? AttributedString(stringLiteral: text)
+    }
+
+    private var css: String {
+        style.css(for: colorScheme)
     }
 
     private var identifier: Int {
@@ -63,29 +64,7 @@ public struct CodeText: View {
     }
 }
 
-private struct BackgroundModifier: ViewModifier {
-    @Environment(\.codeTextBackground) private var visibility
-    @Environment(\.backgroundStyle) private var backgroundStyle
-
-    let color: Color?
-
-    func body(content: Content) -> some View {
-        switch visibility {
-        case .automatic:
-            if let backgroundStyle {
-                content.background(backgroundStyle)
-            } else {
-                content.background(color)
-            }
-        case .visible:
-            content.background(color)
-        case .hidden:
-            content
-        }
-    }
-}
-
 #Preview {
     CodeText(#"print("Hello World")"#, language: .swift)
-        .codeTextInsets(8)
+        .codeBoxInsets(8)
 }

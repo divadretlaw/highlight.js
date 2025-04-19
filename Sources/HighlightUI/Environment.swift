@@ -19,14 +19,9 @@ extension EnvironmentValues {
 
     // MARK: - Internal
 
-    var codeTextInsets: EdgeInsets {
-        get { self[CodeTextInsetsKey.self] }
-        set { self[CodeTextInsetsKey.self] = newValue }
-    }
-
-    var codeTextBackground: Visibility {
-        get { self[CodeTextVisibilityKey.self] }
-        set { self[CodeTextVisibilityKey.self] = newValue }
+    var codeBoxInsets: EdgeInsets? {
+        get { self[codeBoxInsetsKey.self] }
+        set { self[codeBoxInsetsKey.self] = newValue }
     }
 
     var codeTextStyle: Style {
@@ -41,12 +36,8 @@ private struct HighlightEnvironmentKey: EnvironmentKey {
     static let defaultValue: Highlight = Highlight()
 }
 
-private struct CodeTextInsetsKey: EnvironmentKey {
-    static let defaultValue: EdgeInsets = EdgeInsets()
-}
-
-private struct CodeTextVisibilityKey: EnvironmentKey {
-    static let defaultValue: Visibility = .automatic
+private struct codeBoxInsetsKey: EnvironmentKey {
+    static let defaultValue: EdgeInsets? = nil
 }
 
 private struct CodeTextStyleKey: EnvironmentKey {

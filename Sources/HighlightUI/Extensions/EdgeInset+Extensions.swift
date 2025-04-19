@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension EdgeInsets {
-    init(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) {
+    init(_ edges: Edge.Set = .all, _ length: CGFloat?) {
         let top: CGFloat = if edges.contains(.top) {
             length ?? 20
         } else {

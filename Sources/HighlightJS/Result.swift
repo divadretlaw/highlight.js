@@ -42,7 +42,23 @@ extension Highlight {
             else {
                 throw Error.valueNotFound
             }
-            self.value = value
+            self.value = value == "undefined" ? jsValue.objectForKeyedSubscript("code").toString() : value
+            let language = jsValue.objectForKeyedSubscript("language").toString()
+            self.language = Language(rawValue: language)
+            self.relevance = Int(jsValue.objectForKeyedSubscript("relevance").toInt32())
+            self.illegal = jsValue.objectForKeyedSubscript("illegal").toBool()
+        }
+
+        /// Create a Hightlight.js result from a `JSValue`
+        /// - Parameter jsValue: The value
+        init(_ jsValue: JSValue?, fallback: String) throws {
+            guard
+                let jsValue,
+                let value = jsValue.objectForKeyedSubscript("value").toString()
+            else {
+                throw Error.valueNotFound
+            }
+            self.value = value == "undefined" ? fallback : value
             let language = jsValue.objectForKeyedSubscript("language").toString()
             self.language = Language(rawValue: language)
             self.relevance = Int(jsValue.objectForKeyedSubscript("relevance").toInt32())

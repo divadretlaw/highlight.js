@@ -8,6 +8,9 @@
 import Foundation
 
 extension AttributedString {
+    /// Create a attributed string from a highlighted string.
+    ///
+    /// - Parameter string: The highlighted string to use.
     public init(_ string: HighlightedString) {
         self = string.wrappedValue
     }
