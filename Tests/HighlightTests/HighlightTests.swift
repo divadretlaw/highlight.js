@@ -7,7 +7,7 @@ struct HighlightTests {
 
     @Test func version() async throws {
         let result = try await hljs.version
-        #expect(result == "11.9.0")
+        #expect(result == "11.11.1")
     }
 
     @Test func empty() async throws {
